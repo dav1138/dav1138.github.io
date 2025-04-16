@@ -1,14 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>test</title>
+<html><head> <meta charset="UTF-8">
+    <title>students</title>
 </head>
-<body>
 
-  <h1>Github Index Page</h1>
+<body style='margin-left: 30px;'>
+    <h1>CIT7 Students</h1>
+    <p>CIT7 students: Exam Scores</p>
     
-  <p>Hello Github!</p>
+    <input type="button" id='btn' value="Get Student Scores">
+    <div id="result"></div>
+    
+<script>
 
+document.addEventListener('DOMContentLoaded', function() { // after page loads,
+
+    document.querySelector('#btn').onclick = async function(){
+        var response = await fetch('exam_scores.json'); // ajax GET request
+        if(response.ok) {
+            var data = await response.json(); // 'data' holds an array of objects
+            
+            var tableContents = "<table cellspacing='5'>" // generate table
+            tableContents += "<tr><td>Name</td><td>Midterm</td><td>Final</td></tr>";
+            
+            for(i = 0; i < data.length; i++) {
+                tableContents += `<tr><td> ${data[i].name} </td>
+                <td> ${data[i].midterm} </td>         // make rows template literals
+                <td> ${data[i].final} </td></tr>`;
+            }
+            tableContents += "</table>";
+            document.querySelector('#result').innerHTML = tableContents;
+        }
+        else {
+            document.querySelector('#result').innerHTML = "Data not found";
+        }
+    };
+});
+
+</script>
 </body>
 </html>
