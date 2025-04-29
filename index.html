@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Speeding Tickets</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" 
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" 
+integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" 
+integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <nav class="navbar navbar-inverse">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">2Fast.io</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">All Tickets</a></li>
+                <li><a href="25over.html">25mph or move over</a></li>
+            </ul>
+        </div>
+
+    </nav> 
+    <h2>Tickets July 4, 2014, Minneapolis/St.Paul</h2>
+
+    <div id = "ticketsApp">
+
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Ticket ID</th>
+                <th>Time</th>
+                <th>Posted Speed</th>
+                <th>MPH Over</th>
+                <th>Sex</th>
+            </tr>
+            <tr v-for = "ticket in violations">
+                <td>{{ticket.tid}}</td>
+                <td>{{ticket.stop_time}}</td>
+                <td>{{ticket.posted_speed}}</td>
+                <td>{{ticket.actual_speed - ticket.posted_speed}}</td>
+                <td>{{ticket.violator_sex}}</td>
+            </tr>
+        </table>
+    
+    </div>
+</div>
+
+<script>
+
+let app = Vue.createApp({
+            data() {
+                return {
+                    violations: [],
+                }
+            },
+            created() {
+                this.getData()
+            },
+            methods: {
+                async getData() {
+                    const response = await fetch('tickets1.json')
+                    this.violations = await response.json()
+                },
+            }
+          })
+      
+          app.mount('#ticketsApp')
+
+</script>
+</body>
+</html>
